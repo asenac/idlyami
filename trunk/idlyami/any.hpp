@@ -148,7 +148,7 @@ struct any
 
         detail::type_id_t type__id() const
         {
-            return type_id< T >::id();
+            return detail::type_id< T >::id();
         }
 
         holder_base* copy() const

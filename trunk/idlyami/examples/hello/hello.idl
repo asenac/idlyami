@@ -10,6 +10,8 @@ module MyModule
 		void my_third_operation(in string a, inout string b, out string c);
 
 		oneway void my_oneway_operation(in string a, in long b, in float c);
+
+		void my_any_operation(in any a, inout any b, out any c);
 	};
 };
 

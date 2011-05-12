@@ -41,21 +41,81 @@ MyModule::MyInterface_c::~MyInterface_c()
 void MyModule::MyInterface_c::my_operation(int a, int& b, int& c)
 {
     idlyami::Request __request("my_operation", this);
-    idlyami::stub::Arg_IN< int > _a(__request, "a", a);
-    idlyami::stub::Arg_INOUT< int > _b(__request, "b", b);
-    idlyami::stub::Arg_OUT< int > _c(__request, "c", c);
-    // idlyami::stub::Return< int > __result;
+    idlyami::stub::Arg_IN<int> _a(__request, "a", a);
+    idlyami::stub::Arg_INOUT<int> _b(__request, "b", b);
+    idlyami::stub::Arg_OUT<int> _c(__request, "c", c);
 
     __request.send();
-
-    // return __result.value();
 }
 
-static MyModule::MyInterface::_my_operation_t::handler_t ___MyModule__MyInterface__my_operation(&MyModule::MyInterface::my_operation);
-static const char *__MyModule__MyInterface__name[] = {"a", "b", "c"};
-static idlyami::OperationEntry __MyModule__MyInterface[] = {{"my_operation", &___MyModule__MyInterface__my_operation, __MyModule__MyInterface__name},{NULL, NULL, NULL}};
+void MyModule::MyInterface_c::my_second_operation(float a, float& b, float& c)
+{
+    idlyami::Request __request("my_second_operation", this);
+    idlyami::stub::Arg_IN<float> _a(__request, "a", a);
+    idlyami::stub::Arg_INOUT<float> _b(__request, "b", b);
+    idlyami::stub::Arg_OUT<float> _c(__request, "c", c);
 
-MyModule::MyInterface_s::MyInterface_s() : idlyami::Servant(__MyModule__MyInterface)
+    __request.send();
+}
+void MyModule::MyInterface_c::my_third_operation(const std::string& a,
+        std::string& b, std::string& c)
+{
+    idlyami::Request __request("my_third_operation", this);
+    idlyami::stub::Arg_IN<std::string> _a(__request, "a", a);
+    idlyami::stub::Arg_INOUT<std::string> _b(__request, "b", b);
+    idlyami::stub::Arg_OUT<std::string> _c(__request, "c", c);
+
+    __request.send();
+}
+void MyModule::MyInterface_c::my_oneway_operation(const std::string& a, int b,
+        float c)
+{
+    idlyami::Request __request("my_oneway_operation", this);
+    idlyami::stub::Arg_IN<std::string> _a(__request, "a", a);
+    idlyami::stub::Arg_IN<int> _b(__request, "b", b);
+    idlyami::stub::Arg_IN<float> _c(__request, "c", c);
+
+    __request.send_oneway();
+}
+
+static MyModule::MyInterface::_my_operation_t::handler_t
+        ___MyModule__MyInterface__my_operation(
+                &MyModule::MyInterface::my_operation);
+static const char *__MyModule__MyInterface_my_operation_name[] =
+{ "a", "b", "c" };
+
+static MyModule::MyInterface::_my_second_operation_t::handler_t
+        ___MyModule__MyInterface__my_second_operation(
+                &MyModule::MyInterface::my_second_operation);
+static const char *__MyModule__MyInterface_my_second_operation_name[] =
+{ "a", "b", "c" };
+
+static MyModule::MyInterface::_my_third_operation_t::handler_t
+        ___MyModule__MyInterface__my_third_operation(
+                &MyModule::MyInterface::my_third_operation);
+static const char *__MyModule__MyInterface_my_third_operation_name[] =
+{ "a", "b", "c" };
+
+static MyModule::MyInterface::_my_oneway_operation_t::handler_t
+        ___MyModule__MyInterface__my_oneway_operation(
+                &MyModule::MyInterface::my_oneway_operation);
+static const char *__MyModule__MyInterface_my_oneway_operation_name[] =
+{ "a", "b", "c" };
+
+static idlyami::OperationEntry __MyModule__MyInterface[] =
+{
+{ "my_operation", &___MyModule__MyInterface__my_operation,
+        __MyModule__MyInterface_my_operation_name },
+{ "m_second_operation", &___MyModule__MyInterface__my_second_operation,
+        __MyModule__MyInterface_my_second_operation_name },
+{ "m_third_operation", &___MyModule__MyInterface__my_third_operation,
+        __MyModule__MyInterface_my_third_operation_name },
+{ "m_oneway_operation", &___MyModule__MyInterface__my_oneway_operation,
+        __MyModule__MyInterface_my_oneway_operation_name },
+{ NULL, NULL, NULL } };
+
+MyModule::MyInterface_s::MyInterface_s() :
+    idlyami::Servant(__MyModule__MyInterface)
 {
 }
 
@@ -75,4 +135,16 @@ void MyModule_MyInterface_i::my_operation(int a, int& b, int& c)
 
     b = 15;
     c = 100;
+}
+
+void MyModule_MyInterface_i::my_second_operation(float a, float& b, float& c)
+{
+}
+void MyModule_MyInterface_i::my_third_operation(const std::string& a,
+        std::string& b, std::string& c)
+{
+}
+void MyModule_MyInterface_i::my_oneway_operation(const std::string& a, int b,
+        float c)
+{
 }

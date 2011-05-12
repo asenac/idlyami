@@ -42,7 +42,32 @@ public:
                                  idlyami::Arg_INOUT< int >,
                                  idlyami::Arg_OUT< int > > _my_operation_t;
 
+    typedef idlyami::Operation < MyInterface,
+                                 false,
+                                 void,
+                                 idlyami::Arg_IN< float >,
+                                 idlyami::Arg_INOUT< float >,
+                                 idlyami::Arg_OUT< float > > _my_second_operation_t;
+
+    typedef idlyami::Operation < MyInterface,
+                                 false,
+                                 void,
+                                 idlyami::Arg_IN< std::string >,
+                                 idlyami::Arg_INOUT< std::string >,
+                                 idlyami::Arg_OUT< std::string > > _my_third_operation_t;
+
+    typedef idlyami::Operation < MyInterface,
+                                 true,
+                                 void,
+                                 idlyami::Arg_IN< std::string >,
+                                 idlyami::Arg_IN< int >,
+                                 idlyami::Arg_IN< float > > _my_oneway_operation_t;
+
     virtual void my_operation(int a, int& b, int& c) = 0;
+    virtual void my_second_operation(float a, float& b, float& c) = 0;
+    virtual void my_third_operation(const std::string& a, std::string& b, std::string& c) = 0;
+
+    virtual void my_oneway_operation(const std::string& a, int b, float c) = 0;
 };
 
 class MyInterface_c : public virtual idlyami::Object, public virtual MyInterface
@@ -56,6 +81,10 @@ public:
     virtual ~MyInterface_c();
 
     void my_operation(int a, int& b, int& c);
+    void my_second_operation(float a, float& b, float& c);
+    void my_third_operation(const std::string& a, std::string& b, std::string& c);
+
+    void my_oneway_operation(const std::string& a, int b, float c);
 };
 
 class MyInterface_s : public idlyami::Servant, public virtual MyInterface
@@ -76,6 +105,10 @@ class MyModule_MyInterface_i : public MyModule::MyInterface_s
 public:
 
     void my_operation(int a, int& b, int& c);
+    void my_second_operation(float a, float& b, float& c);
+    void my_third_operation(const std::string& a, std::string& b, std::string& c);
+
+    void my_oneway_operation(const std::string& a, int b, float c);
 };
 
 #endif // IDLYAMI_EXAMPLES_HELLO_HELLOC_HPP

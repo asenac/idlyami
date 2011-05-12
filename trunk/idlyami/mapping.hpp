@@ -22,6 +22,7 @@
 
 #include <idlyami/Arguments.hpp>
 #include <idlyami/detail/mpl.hpp>
+#include <string>
 
 namespace idlyami
 {
@@ -119,7 +120,7 @@ struct helper
     }; \
     /***/
 
-IDLYAMI_DECLARE_PRIMITIVE(float, float)
+IDLYAMI_DECLARE_PRIMITIVE(float, double_float)
 IDLYAMI_DECLARE_PRIMITIVE(double, double)
 IDLYAMI_DECLARE_PRIMITIVE(int, integer)
 IDLYAMI_DECLARE_PRIMITIVE(char, char)
@@ -131,6 +132,7 @@ IDLYAMI_DECLARE_PRIMITIVE(unsigned char, char)
 IDLYAMI_DECLARE_PRIMITIVE(unsigned long, long)
 IDLYAMI_DECLARE_PRIMITIVE(unsigned long long, long_long)
 IDLYAMI_DECLARE_PRIMITIVE(unsigned short, short)
+IDLYAMI_DECLARE_PRIMITIVE(std::string, string)
 
 #undef IDLYAMI_DECLARE_PRIMITIVE
 

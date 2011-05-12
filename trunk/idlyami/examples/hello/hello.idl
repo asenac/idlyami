@@ -4,6 +4,12 @@ module MyModule
 	interface MyInterface
 	{
 		void my_operation(in long a, inout long b, out long c);
+
+		void my_second_operation(in float a, inout float b, out float c);
+
+		void my_third_operation(in string a, inout string b, out string c);
+
+		oneway void my_oneway_operation(in string a, in long b, in float c);
 	};
 };
 

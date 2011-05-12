@@ -1,0 +1,119 @@
+// -*- mode: c++; c-basic-style: "bsd"; c-basic-offset: 4; -*-
+/*
+ * Operation.hpp
+ * Copyright (C) Andrés Senac 2011 <andres@senac.es>
+ *
+ * idlyami is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * idlyami is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef IDLYAMI_OPERATION_HPP
+#define IDLYAMI_OPERATION_HPP
+
+#include <idlyami/detail/mpl.hpp>
+#include <idlyami/mapping.hpp>
+#include <idlyami/Skel.hpp>
+
+namespace idlyami
+{
+
+$var max_params = 50
+$range range_params 0..max_params-1
+$range range_base 0..max_params
+
+class Servant;
+class Parameters;
+
+struct OperationHandler
+{
+	virtual void do_call(Servant* _this, ServerRequest* request, const char** names) = 0;
+};
+
+template< typename Interface, bool IsOneway, typename Return $for range_base [[, typename P$range_base = detail::none ]] >
+struct Operation
+{
+    typedef Interface interface_type;
+    static const bool isOneway = IsOneway;
+    typedef typename mapping::return_type< Return >::type return_type;
+    typedef return_type (interface_type::*type)();
+
+    static const unsigned int nparams = 0;
+    
+    struct handler_t : public OperationHandler
+    {
+    	type m_operation;
+    	
+    	handler_t(type operation) : m_operation(operation) 
+    	{
+    	}
+    	
+    	void do_call(Servant* _this, ServerRequest* request, const char** /*unused*/)
+    	{
+    		(dynamic_cast< interface_type* >(_this)->*m_operation)();
+    	}
+	};
+};
+
+$for range_params [[
+
+$range specialization_params 0..range_params
+$range none_params range_params+1..max_params
+
+template< typename Interface, bool IsOneway, typename Return $for specialization_params [[, typename P$specialization_params ]] >
+struct Operation< Interface, IsOneway, Return $for specialization_params [[, P$specialization_params ]] $for none_params [[, detail::none ]] >
+{
+    typedef Interface interface_type;
+    static const bool isOneway = IsOneway;
+    typedef typename mapping::return_type< Return >::type return_type;
+
+    $for specialization_params [[
+typedef typename mapping::arg_type< P$specialization_params >::type p$(specialization_params)_type;
+    ]]
+
+	struct parameters_t
+	{
+    $for specialization_params [[
+		P$specialization_params p$specialization_params;
+    ]]
+	};
+    
+    $range less_one 1..range_params
+typedef return_type (interface_type::*type)(p0_type $for less_one [[, p$(less_one)_type ]]);
+
+    static const unsigned int nparams = $(range_params+1);
+      
+    struct handler_t : public OperationHandler
+    {
+    	type m_operation;
+    	
+    	handler_t(type operation) : m_operation(operation) 
+    	{
+    	}
+    	
+    	void do_call(Servant* _this, ServerRequest* request, const char** names)
+    	{
+    	
+    		$for specialization_params [[
+typename idlyami::skel::skel_type< P$specialization_params >::type __v$specialization_params(*request, *(names++));
+    		]]
+    	(dynamic_cast< interface_type* >(_this)->*m_operation)(__v0.val() $for less_one [[, __v$(less_one).val() ]]);
+    	}
+	};
+};
+
+]]
+
+} // idlyami
+
+#endif // IDLYAMI_OPERATION_HPP
+

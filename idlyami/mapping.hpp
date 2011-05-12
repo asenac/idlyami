@@ -22,7 +22,10 @@
 
 #include <idlyami/Arguments.hpp>
 #include <idlyami/detail/mpl.hpp>
+#include <idlyami/any.hpp>
+
 #include <string>
+#include <stdexcept>
 
 namespace idlyami
 {
@@ -135,6 +138,26 @@ IDLYAMI_DECLARE_PRIMITIVE(unsigned short, short)
 IDLYAMI_DECLARE_PRIMITIVE(std::string, string)
 
 #undef IDLYAMI_DECLARE_PRIMITIVE
+
+template< >
+struct helper< any >
+{
+    typedef any type;
+    typedef arg_type< Arg_IN< type > >::type in_type;
+    typedef arg_type< Arg_OUT< type > >::type out_type;
+
+    template < typename Parameters >
+    static inline void set(Parameters* p, const char* name, in_type t)
+    {
+        throw std::runtime_error("not implemented!");
+    }
+
+    template < typename Parameters >
+    static inline void get(Parameters* p, const char* name, out_type t)
+    {
+        throw std::runtime_error("not implemented!");
+    }
+};
 
 } // mapping
 } // idlyami

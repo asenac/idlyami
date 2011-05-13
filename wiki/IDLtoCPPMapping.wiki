@@ -1,3 +1,5 @@
+#summary IDLYAMI IDL to C++ mapping
+
 = IDLYAMI IDL to C++ mapping =
 
 || *IDL Type* || *C++ Type* || *in C++ Type* || *out C++ Type* || *inout C++ Type* ||

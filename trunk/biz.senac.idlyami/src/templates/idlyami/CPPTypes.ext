@@ -1,0 +1,48 @@
+import org::csu::idl::idlmm;
+
+extension templates::common::Common;
+
+String getStubName(InterfaceDef this) : identifier + "_c";
+String getSkelName(InterfaceDef this) : identifier + "_s";
+
+/*
+ *
+ * Types
+ *
+ */	
+String getReturnType(IDLType this) : "void";
+String getCPPType(IDLType this) : "void";
+String getParamType(ParameterDef this) : "int";
+
+private String getDirection(ParameterDef this): switch(direction) {
+	case ParameterMode::PARAM_IN: "IN"
+	case ParameterMode::PARAM_OUT: "OUT"
+	case ParameterMode::PARAM_INOUT: "INOUT"
+	default: ""
+	};
+String getArgType(ParameterDef this) : "idlyami::ARG_"+ getDirection() +"< " + getType().getCPPType() + " >";
+
+String getTypesList(List[ParameterDef] this) :
+    if size == 0 then
+    	"" 
+	else if size == 1 then
+		first().getArgType()
+	else
+		first().getArgType() + ", " + withoutFirst().getTypesList();
+
+
+/*
+ *
+ * Operation signature
+ *
+ */
+String getSignature(OperationDef this) : getSignature("");		
+String getSignature(OperationDef this, String prefix) : getType().getReturnType() + " " + prefix + identifier + "(" + parameters.getParametersSignature() + ")";
+String getParameterDeclaration(ParameterDef this) : getParamType() + " " + identifier;
+String getParametersSignature(List[ParameterDef] this) :
+	if size == 0 then
+		"" 
+	else if size == 1 then
+		first().getParameterDeclaration()
+	else
+		first().getParameterDeclaration() + ", " + withoutFirst().getParametersSignature();

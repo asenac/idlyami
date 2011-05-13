@@ -1,0 +1,6 @@
+«IMPORT org::csu::idl::idlmm»
+
+«DEFINE main FOR TranslationUnit»
+	«EXPAND templates::idlyami::stub::StubHPP::code FOR this»
+	«EXPAND templates::idlyami::stub::StubCPP::code FOR this»
+«ENDDEFINE»

@@ -17,15 +17,34 @@
 «ENDDEFINE»
 
 «DEFINE code FOR InterfaceDef-»
+«getFQN()»::«identifier»()
+{
+}
+
+«getFQN()»::~«identifier»()
+{
+}
+
+«getFQN()»_c::«identifier»_c(idlyami::ORB* orb,
+        const std::string& target_endpoint, const std::string& poa_id,
+        const std::string& servant_id) :
+    idlyami::Object(orb, target_endpoint, poa_id, servant_id)
+{
+}
+
+«getFQN()»_c::~«identifier»_c()
+{
+}
+
 	«EXPAND code FOREACH contains SEPARATOR "\n\n"-»
 «ENDDEFINE»
 
 «DEFINE code FOR OperationDef-»
 «getSignature(getInterface().definedIn.getFQN() + "::" + getInterface().getStubName() + "::")»
 {
-	idlyami::Request _request("«identifier»", this);
+	idlyami::Request __request("«identifier»", this);
 	«FOREACH parameters AS param-»
-	_request.add("«param.identifier»", «param.identifier»);
+	idlyami::stub::Arg_«param.getDirection()»< «param.getType().getCPPType()» > __«param.identifier»(__request, "«param.identifier»", «param.identifier»);
 	«ENDFOREACH-»
 	
 	«IF isOneway-»

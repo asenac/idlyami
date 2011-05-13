@@ -6,6 +6,9 @@
 «FILE getFileNameStubHpp()-»
 #ifndef «getFileNameStubHpp().getHeader()»
 #define «getFileNameStubHpp().getHeader()»
+
+#include <idlyami/idlyami.hpp>
+
 	«EXPAND code FOREACH contains SEPARATOR "\n\n"»
 #endif // «getFileNameStubHpp().getHeader()» 
 «ENDFILE»
@@ -29,8 +32,10 @@ protected:
 public:
 	virtual ~«identifier»();
 
-	«EXPAND code FOREACH contains SEPARATOR "\n\n"»
+	«EXPAND code FOREACH contains»
 
+	// Implementation helpers
+	«EXPAND typedefs FOREACH contains.typeSelect(OperationDef)»
 }; // «identifier»
 
 class «getStubName()» : public virtual idlyami::Stub, public virtual «identifier»
@@ -40,7 +45,7 @@ public:
 	«getStubName()»();
 	virtual ~«getStubName()»();
 	
-	«FOREACH contains.typeSelect(OperationDef) AS op»
+	«FOREACH contains.typeSelect(OperationDef) AS op-»
 	«op.getSignature()»;
 	«ENDFOREACH»
 
@@ -54,18 +59,25 @@ public:
 	«getSkelName()»();
 	virtual ~«getSkelName()»();
 	
-	«FOREACH contains.typeSelect(OperationDef) AS op»
+	«FOREACH contains.typeSelect(OperationDef) AS op-»
 	«op.getSignature()»;
 	«ENDFOREACH»
 
 }; // «getSkelName()»
 «ENDDEFINE»
 
-«DEFINE code FOR OperationDef»
-	typedef idlyami::Operation< «definedIn.identifier», «isOneway», «getType().getCPPType()»«IF !parameters.isEmpty», «parameters.getTypesList()»«ENDIF» > _type_«identifier»;
-
+«DEFINE code FOR OperationDef-»
 	virtual «getSignature()» = 0;
 «ENDDEFINE»
 
-«DEFINE code FOR AttributeDef»
+«DEFINE typedefs FOR OperationDef-»
+	typedef idlyami::Operation< «definedIn.identifier», «isOneway», «getType().getCPPType()»«IF !parameters.isEmpty», «parameters.getTypesList()»«ENDIF» > _type_«identifier»;
+«ENDDEFINE»
+
+«DEFINE code FOR AttributeDef-»«ENDDEFINE»
+
+«DEFINE code FOR StructDef-»
+struct «identifier»
+{
+};
 «ENDDEFINE»

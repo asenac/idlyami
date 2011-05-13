@@ -51,7 +51,6 @@ public:
 
 }; // «getStubName()»
 
-
 class «getSkelName()» : public virtual idlyami::Skel, public virtual «identifier»
 {
 public:
@@ -79,5 +78,8 @@ public:
 «DEFINE code FOR StructDef-»
 struct «identifier»
 {
+	«FOREACH members AS e-»
+	«e.getType().getCPPType()» «e.identifier»;
+	«ENDFOREACH»
 };
 «ENDDEFINE»

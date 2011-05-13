@@ -10,11 +10,40 @@ String getSkelName(InterfaceDef this) : identifier + "_s";
  * Types
  *
  */	
-String getReturnType(IDLType this) : "void";
 String getCPPType(IDLType this) : "void";
-String getParamType(ParameterDef this) : "int";
+String getCPPType(PrimitiveDef this) : switch(kind) {
+	case PrimitiveKind::PK_SHORT: "short"
+	case PrimitiveKind::PK_USHORT: "unsigned short"
+	case PrimitiveKind::PK_LONG: "int"
+	case PrimitiveKind::PK_ULONG: "unsigned int"
+	case PrimitiveKind::PK_FLOAT: "float"
+	case PrimitiveKind::PK_DOUBLE: "double"
+	case PrimitiveKind::PK_ANY: "idlyami::any"
+	case PrimitiveKind::PK_STRING: "std::string"
+	default: "void" // Error!
+	};
 
-private String getDirection(ParameterDef this): switch(direction) {
+String getReturnType(IDLType this) : getCPPType();
+String getCPPINType(IDLType this) : "const " + getCPPType() + "&";
+String getCPPINType(PrimitiveDef this) : switch(kind) {
+	case PrimitiveKind::PK_ANY: "const " + getCPPType() +"&"
+	case PrimitiveKind::PK_STRING: "const " + getCPPType() +"&" 
+	default: getCPPType()
+	};
+
+String getCPPOUTType(IDLType this) : getCPPType() + "&";
+String getCPPINOUTType(IDLType this) : getCPPType() + "&";
+
+
+
+String getParamType(ParameterDef this) : switch(direction) {
+	case ParameterMode::PARAM_IN: getType().getCPPINType()
+	case ParameterMode::PARAM_OUT: getType().getCPPOUTType()
+	case ParameterMode::PARAM_INOUT: getType().getCPPINOUTType()
+	default: ""
+	};
+
+String getDirection(ParameterDef this): switch(direction) {
 	case ParameterMode::PARAM_IN: "IN"
 	case ParameterMode::PARAM_OUT: "OUT"
 	case ParameterMode::PARAM_INOUT: "INOUT"

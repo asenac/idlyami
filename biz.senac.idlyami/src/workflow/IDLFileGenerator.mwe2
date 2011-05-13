@@ -3,7 +3,7 @@ module workflow.IDLFileGenerator
 import org.eclipse.emf.mwe.utils.*
 
 var fileEncoding = "UTF-8"
-var modelFile = "src/model/prueba.idl"
+var modelFile = "src/model/hello.idl"
 
 // Parameters
 var targetDir = "src-gen"

@@ -1,0 +1,41 @@
+«IMPORT org::csu::idl::idlmm»
+
+«EXTENSION templates::idlyami::IDLYAMI»
+
+«DEFINE code FOR TranslationUnit»
+«FILE getFileNameStubCpp()-»
+#include "«getFileNameStubHpp()»"
+
+	«EXPAND code FOREACH contains SEPARATOR "\n\n"-»
+«ENDFILE»	
+«ENDDEFINE»
+
+«DEFINE code FOR Contained-»«ENDDEFINE»
+
+«DEFINE code FOR ModuleDef-»
+	«EXPAND code FOREACH contains SEPARATOR "\n\n"-»
+«ENDDEFINE»
+
+«DEFINE code FOR InterfaceDef-»
+	«EXPAND code FOREACH contains SEPARATOR "\n\n"-»
+«ENDDEFINE»
+
+«DEFINE code FOR OperationDef-»
+«getSignature(getInterface().definedIn.getFQN() + "::" + getInterface().getStubName() + "::")»
+{
+	idlyami::Request _request("«identifier»", this);
+	«FOREACH parameters AS param-»
+	_request.add("«param.identifier»", «param.identifier»);
+	«ENDFOREACH-»
+	
+	«IF isOneway-»
+	_request.send_oneway();
+	«ELSE-»
+	_request.send();
+	«ENDIF-»
+	
+	«IF !returnVoid()-»
+	return _request.return_value();
+	«ENDIF-»
+}
+«ENDDEFINE»

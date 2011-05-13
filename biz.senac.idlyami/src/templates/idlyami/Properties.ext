@@ -1,0 +1,13 @@
+import org::csu::idl::idlmm;
+
+/* Suffix properties */
+String getStubCppSuffix() : GLOBALVAR StubCppSuffix;
+String getStubHppSuffix() : GLOBALVAR StubHppSuffix;
+String getSkelCppSuffix() : GLOBALVAR SkelCppSuffix;
+String getSkelHppSuffix() : GLOBALVAR SkelHppSuffix;
+String getSkelImplCppSuffix() : GLOBALVAR SkelImplCppSuffix;
+String getSkelImplHppSuffix() : GLOBALVAR SkelImplHppSuffix;
+
+/* generate stub/skelImpl?*/
+Boolean generateStub() : GLOBALVAR genStub;
+Boolean generateSkelImpl() : GLOBALVAR genSkelImpl;

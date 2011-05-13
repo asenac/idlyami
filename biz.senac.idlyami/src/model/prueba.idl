@@ -1,0 +1,6 @@
+module prueba {
+	interface Int {
+		void op(in long a, inout long b, out long c);
+	};
+};
+

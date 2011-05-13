@@ -1,0 +1,6 @@
+import org::csu::idl::idlmm;
+
+extension templates::common::Common reexport;
+extension templates::idlyami::Properties reexport;
+extension templates::idlyami::FileName reexport;
+extension templates::idlyami::CPPTypes reexport;

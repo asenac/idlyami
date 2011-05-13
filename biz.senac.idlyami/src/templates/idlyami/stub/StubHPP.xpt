@@ -1,0 +1,71 @@
+«IMPORT org::csu::idl::idlmm»
+
+«EXTENSION templates::idlyami::IDLYAMI»
+
+«DEFINE code FOR TranslationUnit»
+«FILE getFileNameStubHpp()-»
+#ifndef «getFileNameStubHpp().getHeader()»
+#define «getFileNameStubHpp().getHeader()»
+	«EXPAND code FOREACH contains SEPARATOR "\n\n"»
+#endif // «getFileNameStubHpp().getHeader()» 
+«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE code FOR Contained»«ENDDEFINE»
+
+«DEFINE code FOR ModuleDef»
+namespace «identifier»
+{
+	«EXPAND code FOREACH contains SEPARATOR "\n\n"»
+} // «identifier»
+«ENDDEFINE»
+
+«DEFINE code FOR InterfaceDef»
+class «identifier»
+{
+protected:
+	«identifier»();
+
+public:
+	virtual ~«identifier»();
+
+	«EXPAND code FOREACH contains SEPARATOR "\n\n"»
+
+}; // «identifier»
+
+class «getStubName()» : public virtual idlyami::Stub, public virtual «identifier»
+{
+public:
+
+	«getStubName()»();
+	virtual ~«getStubName()»();
+	
+	«FOREACH contains.typeSelect(OperationDef) AS op»
+	«op.getSignature()»;
+	«ENDFOREACH»
+
+}; // «getStubName()»
+
+
+class «getSkelName()» : public virtual idlyami::Skel, public virtual «identifier»
+{
+public:
+
+	«getSkelName()»();
+	virtual ~«getSkelName()»();
+	
+	«FOREACH contains.typeSelect(OperationDef) AS op»
+	«op.getSignature()»;
+	«ENDFOREACH»
+
+}; // «getSkelName()»
+«ENDDEFINE»
+
+«DEFINE code FOR OperationDef»
+	typedef idlyami::Operation< «definedIn.identifier», «isOneway», «getType().getCPPType()»«IF !parameters.isEmpty», «parameters.getTypesList()»«ENDIF» > _type_«identifier»;
+
+	virtual «getSignature()» = 0;
+«ENDDEFINE»
+
+«DEFINE code FOR AttributeDef»
+«ENDDEFINE»

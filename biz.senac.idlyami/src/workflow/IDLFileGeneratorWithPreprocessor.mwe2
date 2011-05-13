@@ -1,0 +1,62 @@
+module workflow.IDLFileGeneratorWithPreprocessor
+
+var idlFile = "src/model/Cosnaming.idl"
+var fileEncoding = "UTF-8"
+
+// Parameters
+var targetDir = "src-gen"
+var genStub = true
+var genSkelImpl = true
+var StubHppSuffix = "\'C.hpp\'"
+var StubCppSuffix = "\'C.cpp\'"
+var SkelImplHppSuffix = "\'I.hpp\'"
+var SkelImplCppSuffix = "\'I.cpp\'"
+
+Workflow {
+	component = org.csu.idl.mwe2.Reader {
+		idlFile = idlFile
+		modelSlot = "model"
+		
+		// For each include path 
+		// includePath = "/usr/include/idl"
+	}
+	
+	component = org.eclipse.xpand2.Generator {
+		expand = "templates::idlyami::Main::main FOREACH model"
+		metaModel = org.eclipse.xtend.type.impl.java.JavaBeansMetaModel {}
+		outlet = {
+			path = targetDir
+			postprocessor = org.csu.cpp.output.CppBeautifier {}
+		}
+		fileEncoding = fileEncoding
+
+		// Regiones protegidas
+		prSrcPaths = "${targetDir}"
+		
+		// Variables globales
+		globalVarDef = {
+			name = "genStub"
+			value = "${genStub}"
+		}
+		globalVarDef = {
+			name = "genSkelImpl"
+			value = "${genSkelImpl}"
+		}
+		globalVarDef = {
+			name = "StubHppSuffix"
+			value = "${StubHppSuffix}"
+		}
+		globalVarDef = {
+			name = "StubCppSuffix"
+			value = "${StubCppSuffix}"
+		}
+		globalVarDef = {
+			name = "SkelImplHppSuffix"
+			value = "${SkelImplHppSuffix}"
+		}
+		globalVarDef = {
+			name = "SkelImplCppSuffix"
+			value = "${SkelImplCppSuffix}"
+		}
+	}
+}

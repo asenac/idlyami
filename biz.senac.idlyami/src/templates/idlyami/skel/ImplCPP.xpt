@@ -1,0 +1,36 @@
+«IMPORT org::csu::idl::idlmm»
+
+«EXTENSION templates::idlyami::IDLYAMI»
+
+«DEFINE code FOR TranslationUnit»
+«FILE getFileNameSkelImplCpp()-»
+#include "«getFileNameSkelImplHpp()»"
+
+	«EXPAND code FOREACH contains SEPARATOR "\n\n"-»
+«ENDFILE»	
+«ENDDEFINE»
+
+«DEFINE code FOR Contained-»«ENDDEFINE»
+
+«DEFINE code FOR ModuleDef-»
+	«EXPAND code FOREACH contains SEPARATOR "\n\n"-»
+«ENDDEFINE»
+
+«DEFINE code FOR InterfaceDef-»
+«getFQN("_")»_i::«getFQN("_")»_i()
+{
+}
+
+«getFQN("_")»_i::~«getFQN("_")»_i()
+{
+}
+
+	«EXPAND code FOREACH contains SEPARATOR "\n\n"-»
+«ENDDEFINE»
+
+«DEFINE code FOR OperationDef-»
+«getSignature(getInterface().getFQN("_") + "_i::")»
+{
+	// TODO add your code here
+}
+«ENDDEFINE»

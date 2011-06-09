@@ -35,19 +35,19 @@ namespace mapping
 template< typename T >
 struct return_type
 {
-	typedef T type;
+    typedef T type;
 };
 
 template< typename T >
 struct arg_type
 {
-	// Error!
+    // Error!
 };
 
 template< typename T >
 struct arg_type< Arg_IN< T > >
 {
-	typedef T const& type;
+    typedef T const& type;
 };
 
 #define IDLYAMI_DECLARE_PRIMITIVE( primitive ) \
@@ -76,13 +76,13 @@ IDLYAMI_DECLARE_PRIMITIVE(unsigned short)
 template< typename T >
 struct arg_type< Arg_OUT< T > >
 {
-	typedef T& type;
+    typedef T& type;
 };
 
 template< typename T >
 struct arg_type< Arg_INOUT< T > >
 {
-	typedef T& type;
+    typedef T& type;
 };
 
 template< typename T >
@@ -118,7 +118,7 @@ struct helper
         template < typename Parameters > \
         static inline void get(Parameters* p, const char* name, out_type t) \
         { \
-        	t = p->get_##method(name); \
+            t = p->get_##method(name); \
         } \
     }; \
     /***/

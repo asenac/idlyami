@@ -44,10 +44,12 @@ Servant::~Servant()
 
 void Servant::invoke(ServerRequest * request)
 {
-    operations_map_t::iterator it = m_operations_map.find(request->get_operation());
+    const std::string& operation = request->get_operation();
+
+    operations_map_t::iterator it = m_operations_map.find(operation);
 
     if(it != m_operations_map.end())
     {
-        it->second->do_call(this, request, m_parameters_map[request->get_operation()]);
+        it->second->do_call(this, request, m_parameters_map[operation]);
     }
 }

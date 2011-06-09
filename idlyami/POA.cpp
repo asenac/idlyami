@@ -37,19 +37,20 @@ public:
 
     void operator()(yami::incoming_message& msg)
     {
-        // std::cout << "Peticion recibida " << msg.get_object_name() << " " << msg.get_message_name() << std::endl;
-
         DEBUG_VERB(0, "new incoming message");
         DEBUG_VERB(0, "poa_id: " << msg.get_object_name());
         DEBUG_VERB(0, "servant_id: " << msg.get_message_name());
 
+        ServerRequest * request = 0;
         try {
-            ServerRequest * request = new ServerRequest(msg);
+            request = new ServerRequest(msg);
             m_poa->enqueue_request(request);
         } catch (const std::exception& e)
         {
             // Malformed message
             DEBUG_ERROR(e.what());
+
+            delete request;
         }
 
         // msg is no longer available

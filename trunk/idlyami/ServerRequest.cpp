@@ -1,7 +1,7 @@
 // -*- mode: c++; c-basic-style: "bsd"; c-basic-offset: 4; -*-
 /*
  * ServerRequest.cpp
- * Copyright (C) Andrés Senac 2011 <andres@senac.es>
+ * Andrés Senac 2011 <andres@senac.es>
  *
  * idlyami is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published

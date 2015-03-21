@@ -24,6 +24,6 @@ idlyami$ cd build
 build$ cmake ..
 build$ make
 IDL Compiler
-We are developing the IDLYAMI IDL compiler with Eclipse Modeling Framework and their IDL support available from the idl4emf project (http://code.google.com/p/idl4emf/).
+We are developing the IDLYAMI IDL compiler with Eclipse Modeling Framework and their IDL support available from the idl4emf project (https://github.com/catedrasaes-umu/idl4emf).
 
 Our compiler is the EMF/Xpand project biz.senac.idlyami (at the repository) that requires the projects org.csu.idl.idlmm and org.csu.idl.xtext from idl4emf.
